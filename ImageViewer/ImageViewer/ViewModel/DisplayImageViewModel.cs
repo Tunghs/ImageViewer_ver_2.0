@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
 
+using ImageViewer.Controls;
+
 namespace ImageViewer.ViewModel
 {
     public class DisplayImageViewModel : ViewModelBase
@@ -28,7 +30,7 @@ namespace ImageViewer.ViewModel
             set { _dropAreaColor = value; RaisePropertyChanged("DropAreaColor"); }
         }
 
-        private bool _isDropTextVisibility = false;
+        private bool _isDropTextVisibility = true;
         public bool IsDropTextVisibility
         {
             get { return _isDropTextVisibility; }
@@ -54,7 +56,7 @@ namespace ImageViewer.ViewModel
             {
                 string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
                 //ImageViewerProcess(dropFiles[0], true);
-                MessageBox.Show(dropFiles[0]);
+                DisplayImageFromFilePath(dropFiles[0]);
                 IsDropTextVisibility = false;
             }
             DropAreaColor = (System.Windows.Media.Brush)(new BrushConverter().ConvertFromString("#FF252525"));
@@ -73,9 +75,23 @@ namespace ImageViewer.ViewModel
         #endregion
         #endregion
 
+        #region Event
+        public delegate void ImageChangeHandler(string filePath);
+        public event ImageChangeHandler _ImageChangeEvent;
+        #endregion
+
+        public FileController _FileController = new FileController();
         public DisplayImageViewModel()
         {
             InitRelayCommand();
+        }
+
+        private void DisplayImageFromFilePath(string filePath)
+        {
+            DisplayImage = _FileController.GetBitmapImage(filePath);
+
+            if (_ImageChangeEvent != null)
+                _ImageChangeEvent(filePath);
         }
     }
 }

@@ -18,11 +18,11 @@ namespace ImageViewer.ViewModel
     public class MainViewModel : ViewModelBase
     {
         #region UIVariable
-        private string _title = "ImageViewer";
-        public string Title
+        private string _titleBarText = "Image Viewer";
+        public string TitleBarText
         {
-            get { return _title; }
-            set { _title = value; RaisePropertyChanged("Title"); }
+            get { return _titleBarText; }
+            set { _titleBarText = value; RaisePropertyChanged("TitleBarText"); }
         }
         #endregion
 
@@ -86,13 +86,14 @@ namespace ImageViewer.ViewModel
         public MainViewModel()
         {
             _DisplayImageViewModel = new DisplayImageViewModel();
+            _DisplayImageViewModel._ImageChangeEvent += new DisplayImageViewModel.ImageChangeHandler(this.ReceiveFilePath);
 
             InitRelayCommand();
         }
 
-        private void ReceiveTitle(string text)
+        private void ReceiveFilePath(string filePath)
         {
-            Title = text;
+            TitleBarText = filePath;
         }
     }
 }
