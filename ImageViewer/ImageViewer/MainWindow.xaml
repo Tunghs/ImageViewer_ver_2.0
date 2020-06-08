@@ -22,6 +22,25 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}"/>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="30">
+                <MenuItem Header="_File" Height="30">
+                    <MenuItem Header="_Open"
+                              Command="{Binding ButtonClickCommand}"
+                              CommandParameter="OpenFileBrowser"/>
+                    <Separator/>
+                    <MenuItem Header="_Exit"
+                              Command="{Binding ButtonClickCommand}"
+                              CommandParameter="ExitProgram"/>
+                </MenuItem>
+                <MenuItem Header="_Tools" Height="30">
+                    <MenuItem Header="_Invert"/>
+                </MenuItem>
+            </Menu>
+
+            <Grid DockPanel.Dock="Bottom">
+                <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}"/>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Mah:MetroWindow>
