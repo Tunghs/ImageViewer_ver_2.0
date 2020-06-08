@@ -114,9 +114,13 @@
     </ApplicationDefinition>
     <Compile Include="Controls\FileController.cs" />
     <Compile Include="ViewModel\DisplayImageViewModel.cs" />
+    <Compile Include="ViewModel\MainMenuViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\DisplayImageView.xaml.cs">
       <DependentUpon>DisplayImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -131,6 +135,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\DisplayImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

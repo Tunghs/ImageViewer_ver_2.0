@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
+using ImageViewer.Controls;
+
 namespace ImageViewer.ViewModel
 {
     public class MainViewModel : ViewModelBase
@@ -80,12 +82,16 @@ namespace ImageViewer.ViewModel
         private string _FilePath = "";
         private string _InitialDialogPath = @"C:\\";
         private List<string> _Ext = new List<string>() { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff" };
+        private FileController _FileController = new FileController();
         #endregion
 
         public DisplayImageViewModel _DisplayImageViewModel { get; set; }
+        public MainMenuViewModel _MainMenuViewModel { get; set; }
         public MainViewModel()
         {
             _DisplayImageViewModel = new DisplayImageViewModel();
+            _MainMenuViewModel = new MainMenuViewModel();
+
             _DisplayImageViewModel._ImageChangeEvent += new DisplayImageViewModel.ImageChangeHandler(this.ReceiveFilePath);
 
             InitRelayCommand();
@@ -94,6 +100,7 @@ namespace ImageViewer.ViewModel
         private void ReceiveFilePath(string filePath)
         {
             TitleBarText = filePath;
+            _DisplayImageViewModel.DisplayImage = _FileController.GetBitmapImage(filePath);
         }
     }
 }

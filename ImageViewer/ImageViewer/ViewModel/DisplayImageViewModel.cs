@@ -1,6 +1,6 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,8 +23,8 @@ namespace ImageViewer.ViewModel
             set { _displayImage = value; RaisePropertyChanged("DisplayImage"); }
         }
 
-        private System.Windows.Media.Brush _dropAreaColor = (System.Windows.Media.Brush)(new BrushConverter().ConvertFromString("#FF252525"));
-        public System.Windows.Media.Brush DropAreaColor
+        private Brush _dropAreaColor = (Brush)(new BrushConverter().ConvertFromString("#FF252525"));
+        public Brush DropAreaColor
         {
             get { return _dropAreaColor; }
             set { _dropAreaColor = value; RaisePropertyChanged("DropAreaColor"); }
@@ -55,8 +55,9 @@ namespace ImageViewer.ViewModel
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-                //ImageViewerProcess(dropFiles[0], true);
-                DisplayImageFromFilePath(dropFiles[0]);
+                if (_ImageChangeEvent != null)
+                    _ImageChangeEvent(dropFiles[0]);
+
                 IsDropTextVisibility = false;
             }
             DropAreaColor = (System.Windows.Media.Brush)(new BrushConverter().ConvertFromString("#FF252525"));
@@ -80,18 +81,9 @@ namespace ImageViewer.ViewModel
         public event ImageChangeHandler _ImageChangeEvent;
         #endregion
 
-        public FileController _FileController = new FileController();
         public DisplayImageViewModel()
         {
             InitRelayCommand();
-        }
-
-        private void DisplayImageFromFilePath(string filePath)
-        {
-            DisplayImage = _FileController.GetBitmapImage(filePath);
-
-            if (_ImageChangeEvent != null)
-                _ImageChangeEvent(filePath);
         }
     }
 }
