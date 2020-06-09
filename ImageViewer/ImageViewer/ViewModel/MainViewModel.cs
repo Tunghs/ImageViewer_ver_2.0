@@ -26,6 +26,13 @@ namespace ImageViewer.ViewModel
             get { return _titleBarText; }
             set { _titleBarText = value; RaisePropertyChanged("TitleBarText"); }
         }
+
+        private bool _isOpenFileList = false;
+        public bool IsOpenFileList
+        {
+            get { return _isOpenFileList; }
+            set { _isOpenFileList = value; RaisePropertyChanged("IsOpenFileList"); }
+        }
         #endregion
 
         #region Command
@@ -42,33 +49,15 @@ namespace ImageViewer.ViewModel
         {
             switch (param.ToString())
             {
-                case "OpenFileBrowser":
-                    OpenFileBrowser();
-                    break;
-                case "ExitProgram":
-                    ExitProgram();
+                case "OpenFileList":
+                    OpenFileList();
                     break;
             }
         }
 
-        private void OpenFileBrowser()
+        private void OpenFileList()
         {
-            using(CommonOpenFileDialog dialog = new CommonOpenFileDialog())
-            {
-                dialog.InitialDirectory = _InitialDialogPath;
-                dialog.Filters.Add(new CommonFileDialogFilter("All files", "*.*"));
-
-                if(dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    _InitialDialogPath = Path.GetDirectoryName(dialog.FileName);
-                    MessageBox.Show(dialog.FileName);
-                }
-            }
-        }
-
-        public void ExitProgram()
-        {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            IsOpenFileList = true;
         }
 
         private void OnKeyDown(KeyEventArgs e)
@@ -79,18 +68,18 @@ namespace ImageViewer.ViewModel
         #endregion
 
         #region field
-        private string _FilePath = "";
-        private string _InitialDialogPath = @"C:\\";
         private List<string> _Ext = new List<string>() { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff" };
         private FileController _FileController = new FileController();
         #endregion
 
         public DisplayImageViewModel _DisplayImageViewModel { get; set; }
         public MainMenuViewModel _MainMenuViewModel { get; set; }
+        public MainFileListViewModel _MainFileListViewModel { get; set; }
         public MainViewModel()
         {
             _DisplayImageViewModel = new DisplayImageViewModel();
             _MainMenuViewModel = new MainMenuViewModel();
+            _MainFileListViewModel = new MainFileListViewModel();
 
             _DisplayImageViewModel._ImageChangeEvent += new DisplayImageViewModel.ImageChangeHandler(this.ReceiveFilePath);
 

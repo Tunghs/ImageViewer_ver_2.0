@@ -20,7 +20,7 @@
     <Grid AllowDrop="True" Background="Black">
         <Grid x:Name="DropArea" Background="{Binding DropAreaColor}">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Drop Image here" Foreground="White"
-                       Visibility="{Binding IsDropTextVisibility, Converter={StaticResource VisibilityConverter}}"/>
+                       Visibility="{Binding IsVisibleDropText, Converter={StaticResource VisibilityConverter}}"/>
         </Grid>
         <Image Source="{Binding DisplayImage}"/>
         <i:Interaction.Triggers>

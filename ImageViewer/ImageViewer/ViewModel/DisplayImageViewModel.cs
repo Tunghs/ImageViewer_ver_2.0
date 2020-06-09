@@ -30,11 +30,11 @@ namespace ImageViewer.ViewModel
             set { _dropAreaColor = value; RaisePropertyChanged("DropAreaColor"); }
         }
 
-        private bool _isDropTextVisibility = true;
-        public bool IsDropTextVisibility
+        private bool _isVisibleDropText = true;
+        public bool IsVisibleDropText
         {
-            get { return _isDropTextVisibility; }
-            set { _isDropTextVisibility = value; RaisePropertyChanged("IsDropTextVisibility"); }
+            get { return _isVisibleDropText; }
+            set { _isVisibleDropText = value; RaisePropertyChanged("IsVisibleDropText"); }
         }
         #endregion
 
@@ -58,7 +58,7 @@ namespace ImageViewer.ViewModel
                 if (_ImageChangeEvent != null)
                     _ImageChangeEvent(dropFiles[0]);
 
-                IsDropTextVisibility = false;
+                IsVisibleDropText = false;
             }
             DropAreaColor = (System.Windows.Media.Brush)(new BrushConverter().ConvertFromString("#FF252525"));
         }

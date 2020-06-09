@@ -29,6 +29,17 @@
 
             <Grid DockPanel.Dock="Bottom">
                 <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}"/>
+                <Button Content="L&#10;i&#10;s&#10;t" Width="24" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Command="{Binding ButtonClickCommand}" CommandParameter="OpenFileList"/>
+                <Grid HorizontalAlignment="Right">
+                    <Mah:Flyout x:Name="hi" Header="settings" Visibility="Hidden" IsPinned="True" Position="Right" Width="300" IsOpen="{Binding IsOpenFileList}">
+                        <Grid Background="White" Margin="0">
+                            <TextBlock Text="Hello world"/>
+                        </Grid>
+                    </Mah:Flyout>
+                    
+                </Grid>
+                <!--<View:MainFileListView DataContext="{Binding _MainFileListViewModel}"/>-->
             </Grid>
         </DockPanel>
     </Grid>
