@@ -15,6 +15,19 @@
     </d:UserControl.DataContext>
     
     <Grid>
-
+        <ListView x:Name="MainFileList" FontSize="12" Margin="10" BorderThickness="1"
+                  ItemsSource="{Binding FileDataCollection}" SelectedItem="{Binding SellectedListItem, Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="No" Width="35" DisplayMemberBinding="{Binding FileNo}"/>
+                    <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding FileName}"/>
+                </GridView>
+            </ListView.View>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <cmd:EventToCommand Command="{Binding SelectedListItemCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListView>
     </Grid>
 </UserControl>

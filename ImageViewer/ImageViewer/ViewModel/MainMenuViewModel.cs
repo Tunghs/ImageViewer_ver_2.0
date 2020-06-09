@@ -45,7 +45,9 @@ namespace ImageViewer.ViewModel
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     _InitialDialogPath = Path.GetDirectoryName(dialog.FileName);
-                    MessageBox.Show(dialog.FileName);
+
+                    if (_ImageChangeEvent != null)
+                        _ImageChangeEvent(dialog.FileName, true);
                 }
             }
         }
@@ -58,6 +60,11 @@ namespace ImageViewer.ViewModel
 
         #region field
         private string _InitialDialogPath = @"C:\\";
+        #endregion
+
+        #region Event
+        public delegate void ImageChangeHandler(string filePath, bool isAddFile);
+        public event ImageChangeHandler _ImageChangeEvent;
         #endregion
 
         public MainMenuViewModel()

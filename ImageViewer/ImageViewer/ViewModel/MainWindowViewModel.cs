@@ -17,7 +17,7 @@ using ImageViewer.Controls;
 
 namespace ImageViewer.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         #region UIVariable
         private string _titleBarText = "Image Viewer";
@@ -32,6 +32,13 @@ namespace ImageViewer.ViewModel
         {
             get { return _isOpenFileList; }
             set { _isOpenFileList = value; RaisePropertyChanged("IsOpenFileList"); }
+        }
+
+        private bool _isVisibleFileListBtn = true;
+        public bool IsVisibleFileListBtn
+        {
+            get { return _isVisibleFileListBtn; }
+            set { _isVisibleFileListBtn = value; RaisePropertyChanged("IsVisibleFileListBtn"); }
         }
         #endregion
 
@@ -52,12 +59,22 @@ namespace ImageViewer.ViewModel
                 case "OpenFileList":
                     OpenFileList();
                     break;
+                case "CloseFileList":
+                    CloseFileList();
+                    break;
             }
         }
 
         private void OpenFileList()
         {
             IsOpenFileList = true;
+            IsVisibleFileListBtn = false;
+        }
+
+        private void CloseFileList()
+        {
+            IsOpenFileList = false;
+            IsVisibleFileListBtn = true;
         }
 
         private void OnKeyDown(KeyEventArgs e)
@@ -75,21 +92,34 @@ namespace ImageViewer.ViewModel
         public DisplayImageViewModel _DisplayImageViewModel { get; set; }
         public MainMenuViewModel _MainMenuViewModel { get; set; }
         public MainFileListViewModel _MainFileListViewModel { get; set; }
-        public MainViewModel()
+        public MainWindowViewModel()
         {
             _DisplayImageViewModel = new DisplayImageViewModel();
             _MainMenuViewModel = new MainMenuViewModel();
             _MainFileListViewModel = new MainFileListViewModel();
 
             _DisplayImageViewModel._ImageChangeEvent += new DisplayImageViewModel.ImageChangeHandler(this.ReceiveFilePath);
+            _MainMenuViewModel._ImageChangeEvent += new MainMenuViewModel.ImageChangeHandler(this.ReceiveFilePath);
+            _MainFileListViewModel._ImageChangeEvent += new MainFileListViewModel.ImageChangeHandler(this.ReceiveFilePath);
 
             InitRelayCommand();
         }
 
-        private void ReceiveFilePath(string filePath)
+        /// <summary>
+        /// 각 도구들에서 경로를 받아 처리
+        /// </summary>
+        /// <param name="filePath">파일 경로</param>
+        /// <param name="isAddFile">참이면 파일리스트 추가</param>
+        private void ReceiveFilePath(string filePath, bool isAddFile)
         {
             TitleBarText = filePath;
             _DisplayImageViewModel.DisplayImage = _FileController.GetBitmapImage(filePath);
+
+            if (isAddFile)
+            {
+                var myMessage = new NotificationMessage(filePath, "AddFileList");
+                Messenger.Default.Send(myMessage);
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ namespace ImageViewer.ViewModel
             {
                 string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (_ImageChangeEvent != null)
-                    _ImageChangeEvent(dropFiles[0]);
+                    _ImageChangeEvent(dropFiles[0], true);
 
                 IsVisibleDropText = false;
             }
@@ -77,7 +77,7 @@ namespace ImageViewer.ViewModel
         #endregion
 
         #region Event
-        public delegate void ImageChangeHandler(string filePath);
+        public delegate void ImageChangeHandler(string filePath, bool isAddFile);
         public event ImageChangeHandler _ImageChangeEvent;
         #endregion
 

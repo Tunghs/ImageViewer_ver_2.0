@@ -12,8 +12,12 @@
         Title="{Binding TitleBarText}" Height="450" Width="800">
 
     <Window.DataContext>
-        <ViewModel:MainViewModel/>
+        <ViewModel:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Window.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="KeyDown">
@@ -28,18 +32,22 @@
             </Grid>
 
             <Grid DockPanel.Dock="Bottom">
-                <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}"/>
-                <Button Content="L&#10;i&#10;s&#10;t" Width="24" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right"
-                        Command="{Binding ButtonClickCommand}" CommandParameter="OpenFileList"/>
-                <Grid HorizontalAlignment="Right">
-                    <Mah:Flyout x:Name="hi" Header="settings" Visibility="Hidden" IsPinned="True" Position="Right" Width="300" IsOpen="{Binding IsOpenFileList}">
-                        <Grid Background="White" Margin="0">
-                            <TextBlock Text="Hello world"/>
+                <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}" Grid.ColumnSpan="2"/>
+                <Button Content="목&#10;록" Width="24" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Command="{Binding ButtonClickCommand}" CommandParameter="OpenFileList"
+                        Visibility="{Binding IsVisibleFileListBtn, Converter={StaticResource VisibilityConverter}}"/>
+                <Grid HorizontalAlignment="Right" Grid.Column="1">
+                    <Mah:Flyout x:Name="hi" Header="File List" IsPinned="True" Position="Right" Width="300" 
+                                IsOpen="{Binding IsOpenFileList, Mode=TwoWay}" Foreground="White"
+                                CloseCommand="{Binding ButtonClickCommand}" CloseCommandParameter="CloseFileList">
+                        <Mah:Flyout.Background>
+                            <SolidColorBrush Color="#FF252424" Opacity="0.9"/>
+                        </Mah:Flyout.Background>
+                        <Grid>
+                            <View:MainFileListView DataContext="{Binding _MainFileListViewModel}"/>
                         </Grid>
                     </Mah:Flyout>
-                    
                 </Grid>
-                <!--<View:MainFileListView DataContext="{Binding _MainFileListViewModel}"/>-->
             </Grid>
         </DockPanel>
     </Grid>
