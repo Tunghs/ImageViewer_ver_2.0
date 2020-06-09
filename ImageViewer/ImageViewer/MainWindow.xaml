@@ -33,15 +33,17 @@
 
             <Grid DockPanel.Dock="Bottom">
                 <View:DisplayImageView DataContext="{Binding _DisplayImageViewModel}" Grid.ColumnSpan="2"/>
+                
                 <Button Content="목&#10;록" Width="24" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right"
                         Command="{Binding ButtonClickCommand}" CommandParameter="OpenFileList"
                         Visibility="{Binding IsVisibleFileListBtn, Converter={StaticResource VisibilityConverter}}"/>
+                
                 <Grid HorizontalAlignment="Right" Grid.Column="1">
-                    <Mah:Flyout x:Name="hi" Header="File List" IsPinned="True" Position="Right" Width="300" 
+                    <Mah:Flyout x:Name="hi" Header="File List" IsPinned="True" Position="Right" Width="350" 
                                 IsOpen="{Binding IsOpenFileList, Mode=TwoWay}" Foreground="White"
                                 CloseCommand="{Binding ButtonClickCommand}" CloseCommandParameter="CloseFileList">
                         <Mah:Flyout.Background>
-                            <SolidColorBrush Color="#FF252424" Opacity="0.9"/>
+                            <SolidColorBrush Color="#FF252424" Opacity="0.8"/>
                         </Mah:Flyout.Background>
                         <Grid>
                             <View:MainFileListView DataContext="{Binding _MainFileListViewModel}"/>

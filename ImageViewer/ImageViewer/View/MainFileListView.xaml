@@ -8,19 +8,32 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:Mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="350">
 
     <d:UserControl.DataContext>
         <ViewModel:MainFileListViewModel/>
     </d:UserControl.DataContext>
+
+    <UserControl.Resources>
+        <Style x:Key="ListViewHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="#454545"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#454545"/>
+        </Style>
+        <Style x:Key="ListViewItemsStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Background" Value="#454545"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
     
     <Grid>
-        <ListView x:Name="MainFileList" FontSize="12" Margin="10" BorderThickness="1"
-                  ItemsSource="{Binding FileDataCollection}" SelectedItem="{Binding SellectedListItem, Mode=TwoWay}">
+        <ListView x:Name="MainFileList" FontSize="12" Margin="10" BorderThickness="1" Background="#454545" Foreground="White"
+                  ItemsSource="{Binding FileDataCollection}" SelectedItem="{Binding SellectedListItem, Mode=TwoWay}"
+                  ItemContainerStyle="{StaticResource ListViewItemsStyle}">
             <ListView.View>
-                <GridView>
+                <GridView ColumnHeaderContainerStyle="{StaticResource ListViewHeaderStyle}">
                     <GridViewColumn Header="No" Width="35" DisplayMemberBinding="{Binding FileNo}"/>
-                    <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding FileName}"/>
+                    <GridViewColumn Header="Name" Width="285" DisplayMemberBinding="{Binding FileName}" />
                 </GridView>
             </ListView.View>
             <i:Interaction.Triggers>

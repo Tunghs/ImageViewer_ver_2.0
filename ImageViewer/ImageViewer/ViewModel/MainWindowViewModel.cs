@@ -85,7 +85,7 @@ namespace ImageViewer.ViewModel
         #endregion
 
         #region field
-        private List<string> _Ext = new List<string>() { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff" };
+        private List<string> _SetExtensions = new List<string>() { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tif", ".tiff" };
         private FileController _FileController = new FileController();
         #endregion
 
@@ -112,12 +112,24 @@ namespace ImageViewer.ViewModel
         /// <param name="isAddFile">참이면 파일리스트 추가</param>
         private void ReceiveFilePath(string filePath, bool isAddFile)
         {
+            if (_SetExtensions.Any(e => filePath.ToLower().EndsWith(e)))
+            {
+                RunImageViewerProcess(filePath, isAddFile);
+            }
+            else
+            {
+                MessageBox.Show("지원하지 않는 확장자입니다.", "경고", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void RunImageViewerProcess(string filePath, bool isAddFile)
+        {
             TitleBarText = filePath;
             _DisplayImageViewModel.DisplayImage = _FileController.GetBitmapImage(filePath);
 
             if (isAddFile)
             {
-                var myMessage = new NotificationMessage(filePath, "AddFileList");
+                var myMessage = new NotificationMessage(filePath, _SetExtensions, "AddFileList");
                 Messenger.Default.Send(myMessage);
             }
         }

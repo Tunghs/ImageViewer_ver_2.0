@@ -14,9 +14,9 @@ namespace ImageViewer.ViewModel
     #region List Member
     public class FileData
     {
-        public int FileNo;
-        public string FileName;
-        public string FilePath;
+        public int FileNo { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
 
         public FileData(int no, string filePath)
         {
@@ -77,19 +77,28 @@ namespace ImageViewer.ViewModel
         {
             if (message.Notification == "AddFileList")
             {
-                string tempEvent = message.Sender as string;
-                GetFileList(tempEvent);
+                string filePath = message.Sender as string;
+                List<string> setExtensions = message.Target as List<string>;
+                GetFileList(filePath, setExtensions);
             }
         }
 
-        private void GetFileList(string filePath)
+        private void GetFileList(string filePath, List<string> setExtensions)
         {
             FileDataCollection.Clear();
             string fileDirPath = Path.GetDirectoryName(filePath);
 
             if (Directory.Exists(fileDirPath))
             {
+                var imageFilePaths = Directory.GetFiles(fileDirPath, "*.*", SearchOption.TopDirectoryOnly).Where(s => setExtensions.Any(e => s.ToLower().EndsWith(e)));
 
+                int imageCount = 1;
+                foreach (string imageFilePath in imageFilePaths)
+                {
+                    FileData fileData = new FileData(imageCount, imageFilePath);
+                    FileDataCollection.Add(fileData);
+                    imageCount++;
+                }
             }
         }
     }
